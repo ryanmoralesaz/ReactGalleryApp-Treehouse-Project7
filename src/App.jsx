@@ -1,35 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import axios from 'axios';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import apiKey from './config';
+
 import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0);
+// Component Imports
+import PhotoList from './components/PhotoList';
+import Search from './components/Search';
+import Nav from './components/Nav';
+import NotFound from './components/NotFound';
 
+function App() {
+  const [photos, setPhotos] = useState([]);
+
+  const fetchData = async (query) => {
+    const url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
+
+    try {
+      const response = await axios.get(url);
+      setPhotos(response.data.photos.photo);
+    } catch (error) {
+      console.error('Error fetching and parsing data', error);
+    }
+  };
   return (
-    <>
-      <div>
-        <a href='https://vitejs.dev' target='_blank'>
-          <img src={viteLogo} className='logo' alt='Vite logo' />
-        </a>
-        <a href='https://react.dev' target='_blank'>
-          <img src={reactLogo} className='logo react' alt='React logo' />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className='App'>
+      <Nav />
+      <Search />
+      <Routes>
+        <Route path='/' element={<Navigate replace to='/cats' />} />
+        <Route path='/cats' element={<PhotoList topic='cats' />} />
+        <Route path='/dogs' element={<PhotoList topic='dogs' />} />
+        <Route path='/computers' element={<PhotoList topic='computers' />} />
+        <Route path='/search/:query' element={<PhotoList />} />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
+    </div>
   );
 }
 
