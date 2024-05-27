@@ -1,10 +1,7 @@
-import { useState, useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import apiKey from './config';
-
 import './App.css';
 
 // Component Imports
@@ -14,8 +11,13 @@ import Nav from './components/Nav';
 import NotFound from './components/NotFound';
 
 function App() {
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState({
+    cats: [],
+    dogs: [],
+    computers: []
+  });
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const [topic, setTopic] = useState('cats');
 
   const fetchData = async (query) => {
@@ -24,7 +26,11 @@ function App() {
 
     try {
       const response = await axios.get(url);
-      setPhotos(response.data.photos.photo);
+      setPhotos((prevPhotos) => ({
+        ...prevPhotos,
+        [query]: response.data.photos.photo
+      }));
+      setTopic(query);
     } catch (error) {
       console.error('Error fetching and parsing data', error);
     }
@@ -32,13 +38,29 @@ function App() {
   };
 
   useEffect(() => {
-    fetchData(topic); // Default fetch for the initial load
-  }, [topic]);
+    const preloadTopics = async () => {
+      await fetchData('cats');
+      await fetchData('dogs');
+      await fetchData('computers');
+    };
+    preloadTopics();
+  }, []);
+
+  const handleSearch = (query) => {
+    if (photos[query]) {
+      setTopic(query);
+      navigate(`/search/${query}`);
+    } else { 
+
+      fetchData(query);
+      navigate(`/search/${query}`);
+    }
+  };
 
   return (
     <div className='App'>
       <Nav />
-      <Search />
+      <Search onSearch={handleSearch} />
       <Routes>
         <Route path='/' element={<Navigate replace to='/cats' />} />
         <Route
@@ -48,7 +70,7 @@ function App() {
               topic='cats'
               photos={photos}
               loading={loading}
-              setTopic={setTopic}
+              fetchData={fetchData}
             />
           }
         />
@@ -59,7 +81,7 @@ function App() {
               topic='dogs'
               photos={photos}
               loading={loading}
-              setTopic={setTopic}
+              fetchData={fetchData}
             />
           }
         />
@@ -70,7 +92,7 @@ function App() {
               topic='computers'
               photos={photos}
               loading={loading}
-              setTopic={setTopic}
+              fetchData={fetchData}
             />
           }
         />
@@ -80,7 +102,7 @@ function App() {
             <PhotoList
               photos={photos}
               loading={loading}
-              setTopic={setTopic}
+              fetchData={fetchData}
             />
           }
         />

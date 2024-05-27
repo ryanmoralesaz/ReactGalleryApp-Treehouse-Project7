@@ -1,6 +1,7 @@
 # Treehouse Project 7 - Full Stack Degree - React Gallery App
 
 > Built using VITE.
+> Dev run command `npm run dev`
 
 ## Project Diary
 
@@ -30,3 +31,7 @@
 10. Set up a photos state array with useState
 
 11. Created a fetchData async function to use my apiKey and set the photosState with the returned data.
+
+12. Got the animal search terms working with use Effects and passing the photo state as props to the PhotoList component
+
+13. The 

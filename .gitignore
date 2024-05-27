@@ -26,3 +26,4 @@ dist-ssr
 # ENV and Config Secrets
 config.js
 hidden-readme.md
+TODO.md
