@@ -77,7 +77,6 @@ input {
   align-items: center;
   width: 100%;
   box-sizing: border-box;
- /* margin: 0 1vw; */
 }
 .photo-container ul {
   display: grid;
@@ -86,7 +85,7 @@ input {
   justify-content: center;
 }
 
-.photo-container ul li {
+.photo-container ul li, .skeleton {
   width: 15vw;
   height: 15vw;
   overflow: hidden;
@@ -98,7 +97,8 @@ input {
   height: 100%;
   transform: scale(1.25);
   transition: transform 1.25s;
-  background-size: cover;
+  /* background-size: cover; */
+  object-fit: cover;
   background-position: center center;
 }
 
@@ -138,5 +138,24 @@ input {
   .main-nav li {
     margin: 10px;
     width: 100px;
+  }
+}
+
+/* Skeleton Loader Styles */
+.skeleton {
+  background-color: #e0e0e0;
+  background-image: linear-gradient(90deg, #e0e0e0, #f0f0f0, #e0e0e0);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  animation: shimmer 1.5s infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
   }
 }

@@ -6,30 +6,36 @@ const PhotoList = ({ photos, loading, topic, fetchData }) => {
   const { query } = useParams();
 
   useEffect(() => {
-    if (!photos.length && fetchData) {
+    if (query && (!photos[query] || !photos[query].length)) {
       fetchData(query);
-    } 
-  }, [query, photos.length, fetchData]);
-
+    }
+  }, [query, photos, fetchData]);
+  const currentPhotos = photos[query] || [];
   return (
     <>
       <h2>
-        {topic ? topic.charAt(0).toUpperCase() + topic.slice(1) : 'Photos'}
+        {loading
+          ? 'Loading...' :
+         query ? query.charAt(0).toUpperCase() + query.slice(1) : 'Photos'}
       </h2>
       <div className='photo-container'>
         {loading ? (
-          <h2>Loading...</h2>
-        ) : photos.length > 0 ? (
           <ul>
-            {photos.map((photo) => (
+            {Array.from({ length: 24 }).map((_, index) => (
+              <li key={index} className='skeleton'></li>
+            ))}
+          </ul>
+        ) : currentPhotos.length > 0 ? (
+          <ul>
+            {currentPhotos.map((photo) => (
               <Photo key={photo.id} photo={photo} />
             ))}
           </ul>
         ) : (
-          <>
+          <div className='not-found'>
             <h2>No Results Found</h2>
             <h3>That search did not return any results, please try again.</h3>
-          </>
+          </div>
         )}
       </div>
     </>

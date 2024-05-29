@@ -22,19 +22,22 @@ function App() {
 
   const fetchData = async (query) => {
     setLoading(true);
+    setTopic(query);
     const url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
 
     try {
       const response = await axios.get(url);
+
       setPhotos((prevPhotos) => ({
         ...prevPhotos,
         [query]: response.data.photos.photo
       }));
-      setTopic(query);
+
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching and parsing data', error);
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -50,8 +53,7 @@ function App() {
     if (photos[query]) {
       setTopic(query);
       navigate(`/search/${query}`);
-    } else { 
-
+    } else {
       fetchData(query);
       navigate(`/search/${query}`);
     }
@@ -59,7 +61,7 @@ function App() {
 
   return (
     <div className='App'>
-      <Nav />
+      <Nav onSearch={handleSearch} />
       <Search onSearch={handleSearch} />
       <Routes>
         <Route path='/' element={<Navigate replace to='/cats' />} />
@@ -68,8 +70,8 @@ function App() {
           element={
             <PhotoList
               topic='cats'
-              photos={photos}
-              loading={loading}
+              photos={photos.cats}
+              loading={loading && topic === 'cats'}
               fetchData={fetchData}
             />
           }
@@ -79,9 +81,9 @@ function App() {
           element={
             <PhotoList
               topic='dogs'
-              photos={photos}
-              loading={loading}
+              photos={photos.dogs}
               fetchData={fetchData}
+              loading={loading && topic === 'dogs'}
             />
           }
         />
@@ -90,8 +92,8 @@ function App() {
           element={
             <PhotoList
               topic='computers'
-              photos={photos}
-              loading={loading}
+              photos={photos.computers}
+              loading={loading && topic === 'computers'}
               fetchData={fetchData}
             />
           }
@@ -102,6 +104,7 @@ function App() {
             <PhotoList
               photos={photos}
               loading={loading}
+              topic={topic}
               fetchData={fetchData}
             />
           }
