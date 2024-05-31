@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 // accept the search props as a destructured object
 const Search = ({ onSearch, searchQuery, setSearchQuery }) => {
