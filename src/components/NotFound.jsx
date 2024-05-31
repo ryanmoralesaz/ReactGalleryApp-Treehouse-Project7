@@ -1,5 +1,5 @@
 // src/components/NotFound.jsx
-import React from 'react';
+import React from "react";
 
 const NotFound = () => (
   <div className="not-found">

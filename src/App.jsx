@@ -1,29 +1,29 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import apiKey from './config';
-import './App.css';
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import axios from "axios";
+import apiKey from "./config";
+import "./App.css";
 
 // Component Imports
-import PhotoList from './components/PhotoList';
-import Search from './components/Search';
-import Nav from './components/Nav';
-import NotFound from './components/NotFound';
+import PhotoList from "./components/PhotoList";
+import Search from "./components/Search";
+import Nav from "./components/Nav";
+import NotFound from "./components/NotFound";
 
 function App() {
   // initialize the state with empty arrays to hold the prefetched data for the default 3 topics
   const [photos, setPhotos] = useState({
     cats: [],
     dogs: [],
-    computers: []
+    computers: [],
   });
   // initialize the state for tracking loading attempts
   // const [loading, setLoading] = useState(true);
   const [loadingCount, setLoadingCount] = useState(0);
   // initialize the default search topic as 'cats'
-  const [topic, setTopic] = useState('cats');
+  const [topic, setTopic] = useState("cats");
   // initialize the searchQuery term to reset the search bar
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   // instantiate the useNavigate() hook for tracking route navigation history
   const navigate = useNavigate();
 
@@ -49,7 +49,7 @@ function App() {
         const response = await axios.get(url);
         // check if a response was returned with no photos and end the search
         if (!response.data.photos.photo.length) {
-          throw new Error('no photos found');
+          throw new Error("no photos found");
         }
         // set photos to the response
         const newPhotos = response.data.photos.photo;
@@ -60,16 +60,16 @@ function App() {
           ...prevPhotos,
           // dynamically set the key to the current query argument using the ES6 computed property names square bracket syntax
           // set the value of the query key pair to the response from the axios request
-          [query]: newPhotos
+          [query]: newPhotos,
         }));
       } catch (error) {
         // log to the console if there is an error in the request
-        console.error('Error fetching and parsing data', error);
+        console.error("Error fetching and parsing data", error);
       } finally {
         // decrement the loading count at end of search
         setLoadingCount((prevCount) => prevCount - 1);
         // set the search input text to an empty string
-        setSearchQuery('');
+        setSearchQuery("");
       }
     },
     // the photos will be the dependency for the callBack memo
@@ -77,7 +77,7 @@ function App() {
   );
   // utilize the useRef hook to memoize the default preloaded photos
   const preloadTopics = useRef(async () => {
-    const defaultTopics = ['cats', 'dogs', 'computers'];
+    const defaultTopics = ["cats", "dogs", "computers"];
     for (const topic of defaultTopics) {
       await fetchData(topic);
     }
@@ -96,19 +96,19 @@ function App() {
       fetchData(query);
     }
     setTopic(query);
-    setSearchQuery('');
+    setSearchQuery("");
     navigate(`/search/${query}`);
   };
   // create a handler for the nav button clicks
   const handleNavClick = (query) => {
     // reset the search query
-    setSearchQuery('');
+    setSearchQuery("");
     navigate(`/search/${query}`);
   };
   // set the isLoading boolean to true if the loading count is greater than zero meaning the axios request is in process
   const isLoading = loadingCount > 0;
   return (
-    <div className='App'>
+    <div className="App">
       {/* utilize the imported components and pass the state as props */}
       <Nav onClick={handleNavClick} />
       <Search
@@ -117,44 +117,44 @@ function App() {
         setSearchQuery={setSearchQuery}
       />
       <Routes>
-        <Route path='/' element={<Navigate replace to='/search/cats' />} />
+        <Route path="/" element={<Navigate replace to="/search/cats" />} />
         {/* provide the preloaded photos state keys to the default search paths */}
         <Route
-          path='/cats'
+          path="/cats"
           element={
             <PhotoList
-              topic='cats'
+              topic="cats"
               photos={photos.cats}
-              loading={isLoading && topic === 'cats'}
+              loading={isLoading && topic === "cats"}
               fetchData={fetchData}
             />
           }
         />
         <Route
-          path='/dogs'
+          path="/dogs"
           element={
             <PhotoList
-              topic='dogs'
+              topic="dogs"
               photos={photos.dogs}
-              loading={isLoading && topic === 'dogs'}
+              loading={isLoading && topic === "dogs"}
               fetchData={fetchData}
             />
           }
         />
         <Route
-          path='/computers'
+          path="/computers"
           element={
             <PhotoList
-              topic='computers'
+              topic="computers"
               photos={photos.computers}
-              loading={isLoading && topic === 'computers'}
+              loading={isLoading && topic === "computers"}
               fetchData={fetchData}
             />
           }
         />
         {/* provide the dynamic query path as a route with the colon syntax :query */}
         <Route
-          path='/search/:query'
+          path="/search/:query"
           element={
             <PhotoList
               photos={photos}
@@ -165,7 +165,7 @@ function App() {
           }
         />
         {/* provide the not found component when a url endpoint is non existent utilizing the path=star catch all syntax */}
-        <Route path='*' element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

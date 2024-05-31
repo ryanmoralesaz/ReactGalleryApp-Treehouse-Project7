@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   color: #3f4850;
 }
 .app {
@@ -88,8 +88,9 @@ input {
   justify-content: center;
 }
 
-.photo-container ul li, .skeleton {
-    position: relative;
+.photo-container ul li,
+.skeleton {
+  position: relative;
   /* set an 1:1 aspect ratio based off of the viewport width */
   width: 15vw;
   height: 15vw;
@@ -98,9 +99,9 @@ input {
 }
 
 .photo-container ul img {
-    position: absolute;
-    top: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   transform: scale(1.25);
@@ -176,5 +177,3 @@ input {
     background-position: -100% 0;
   }
 }
-
-

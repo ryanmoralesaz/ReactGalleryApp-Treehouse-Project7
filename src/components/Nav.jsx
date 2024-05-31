@@ -1,22 +1,22 @@
 // src/components/Nav.jsx
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import { NavLink } from "react-router-dom";
 
 // passthrough the click handler as a destructured prop
 const Nav = ({ onClick }) => {
-  const handleClick = (query) => { 
+  const handleClick = (query) => {
     onClick(query);
-  }
+  };
   return (
     // set up the three default search buttons and pass the click handler as a prop
-    <nav className='main-nav'>
+    <nav className="main-nav">
       <ul>
         <li>
           {/* set up the three default NavLink buttons for finding the default search queries */}
           <NavLink
-            to='/search/cats'
+            to="/search/cats"
             onClick={() => {
-              handleClick('cats');
+              handleClick("cats");
             }}
           >
             Cats
@@ -24,9 +24,9 @@ const Nav = ({ onClick }) => {
         </li>
         <li>
           <NavLink
-            to='/search/dogs'
+            to="/search/dogs"
             onClick={() => {
-              handleClick('dogs');
+              handleClick("dogs");
             }}
           >
             Dogs
@@ -34,9 +34,9 @@ const Nav = ({ onClick }) => {
         </li>
         <li>
           <NavLink
-            to='/search/computers'
+            to="/search/computers"
             onClick={() => {
-              handleClick('computers');
+              handleClick("computers");
             }}
           >
             Computers
