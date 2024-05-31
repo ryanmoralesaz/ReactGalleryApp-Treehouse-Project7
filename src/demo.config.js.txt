@@ -1,0 +1,3 @@
+const demoApiKey = 'flickrApiKey';
+
+export const demoApiKey;

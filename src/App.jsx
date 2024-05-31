@@ -110,7 +110,7 @@ function App() {
   return (
     <div className='App'>
       {/* utilize the imported components and pass the state as props */}
-      <Nav onSearch={handleNavClick} />
+      <Nav onClick={handleNavClick} />
       <Search
         onSearch={handleSearch}
         searchQuery={searchQuery}
