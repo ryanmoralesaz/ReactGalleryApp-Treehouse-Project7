@@ -2,21 +2,25 @@
 import React, { useEffect } from 'react';
 import Photo from './Photo';
 import { useParams } from 'react-router-dom';
-const PhotoList = ({ photos, loading, topic, fetchData }) => {
+
+const PhotoList = ({ photos, loading, fetchData }) => {
+  // save the destructured query param from the dynamic route path
   const { query } = useParams();
 
   useEffect(() => {
-    if (query && (!photos[query] || !photos[query].length)) {
+    if (query && (!photos[query] || photos[query].length === 0)) {
       fetchData(query);
     }
-  }, [query, photos, fetchData]);
+  }, [query, fetchData]);
   const currentPhotos = photos[query] || [];
   return (
     <>
       <h2>
         {loading
-          ? 'Loading...' :
-         query ? query.charAt(0).toUpperCase() + query.slice(1) : 'Photos'}
+          ? 'Loading...'
+          : query
+          ? query.charAt(0).toUpperCase() + query.slice(1)
+          : 'Photos'}
       </h2>
       <div className='photo-container'>
         {loading ? (

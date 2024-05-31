@@ -33,5 +33,3 @@
 11. Created a fetchData async function to use my apiKey and set the photosState with the returned data.
 
 12. Got the animal search terms working with use Effects and passing the photo state as props to the PhotoList component
-
-13. The 

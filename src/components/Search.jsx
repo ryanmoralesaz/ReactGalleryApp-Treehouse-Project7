@@ -1,25 +1,37 @@
 import React, { useState } from 'react';
 
-const Search = ({ onSearch }) => {
-  const [query, setQuery] = useState('');
+// accept the search props as a destructured object
+const Search = ({ onSearch, searchQuery, setSearchQuery }) => {
 
   const handleSubmit = (e) => {
+    // prevent the page reload
     e.preventDefault();
-    onSearch(query);
+    // check if the search query is non empty
+    if (searchQuery.trim()) {
+      // trim the search query and call the onSearch callback from the form submission
+      onSearch(searchQuery.trim());
+    }
   };
 
   return (
-    <form className="search-form" onSubmit={handleSubmit}>
+    <form className='search-form' onSubmit={handleSubmit}>
       <input
-        type="text"
-        name="search"
-        placeholder="Search"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        type='text'
+        name='search'
+        placeholder='Search'
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
       />
-      <button type="submit">
-        <svg fill="#fff" height="24" viewBox="0 0 23 23" width="24">
-          <path d="M15.78 13.59h-.79l-.28-.27a9.48 9.48 0 0 0 2.29-6.1A9.52 9.52 0 0 0 7.5 0 9.52 9.52 0 0 0 0 9.52 9.52 9.52 0 0 0 7.5 19a9.48 9.48 0 0 0 6.1-2.29l.27.28v.79l5.76 5.74a1 1 0 0 0 1.42-1.42l-5.74-5.76zm-6.27 0a6.93 6.93 0 1 1 0-13.86 6.93 6.93 0 0 1 0 13.86z" />
+      <button type='submit'>
+        <svg
+          fill='#fff'
+          height='24'
+          viewBox='0 0 23 23'
+          width='24'
+          xmlns='http://www.w3.org/2000/svg'
+        >
+          <path d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z' />
+          <path d='M0 0h24v24H0z' fill='none' />
         </svg>
       </button>
     </form>
